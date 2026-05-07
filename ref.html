@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CHEDI – Projects</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    /* ── DESIGN TOKENS ─────────────────────────────────── */
+    :root {
+      --green-dark:   #1a3a2a;
+      --green-mid:    #265c3a;
+      --green-light:  #3a7d54;
+      --gold:         #c9a84c;
+      --gold-light:   #e8c97a;
+      --beige:        #f5f0e8;
+      --beige-dark:   #ede5d4;
+      --white:        #ffffff;
+      --text-dark:    #1a2214;
+      --text-muted:   #5a6b52;
+      --shadow-soft:  0 4px 24px rgba(26,58,42,0.10);
+      --shadow-hover: 0 12px 40px rgba(26,58,42,0.20);
+      --radius-card:  16px;
+      --radius-img:   12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--beige);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV BAR ───────────────────────────────────────── */
+    .nav {
+      background: var(--green-dark);
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 2px;
+    }
+    .nav-logo span { color: var(--white); font-weight: 400; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+    /* ── PAGE HERO ─────────────────────────────────────── */
+    .page-hero {
+      background: var(--green-dark);
+      padding: 72px 48px 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&q=80') center/cover no-repeat;
+      opacity: 0.18;
+    }
+    .page-hero-content { position: relative; z-index: 1; }
+    .page-hero-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--green-dark);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      padding: 6px 20px;
+      border-radius: 40px;
+      margin-bottom: 20px;
+    }
+    .page-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(42px, 6vw, 68px);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .page-hero h1 em { color: var(--gold); font-style: normal; }
+    .page-hero p {
+      font-size: 17px;
+      color: rgba(255,255,255,0.72);
+      max-width: 560px;
+      margin: 0 auto;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* ── SECTION WRAPPER ───────────────────────────────── */
+    .section {
+      padding: 80px 48px;
+    }
+    .section:nth-child(odd) { background: var(--beige); }
+    .section:nth-child(even) { background: var(--beige-dark); }
+
+    /* ── SECTION HEADER ────────────────────────────────── */
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+    .section-header-text { flex: 1; }
+    .section-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-left: 3px solid var(--gold);
+      padding-left: 12px;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 600;
+      color: var(--green-dark);
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+    .section-sub {
+      font-size: 16px;
+      color: var(--text-muted);
+      font-weight: 300;
+      line-height: 1.65;
+      max-width: 480px;
+    }
+    .section-count {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 80px;
+      font-weight: 700;
+      color: var(--green-dark);
+      opacity: 0.07;
+      line-height: 1;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── BANNER IMAGE ──────────────────────────────────── */
+    .section-banner {
+      width: 100%;
+      height: 340px;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 52px;
+      position: relative;
+    }
+    .section-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .section-banner:hover img { transform: scale(1.03); }
+    .section-banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(26,58,42,0.6) 0%, transparent 60%);
+      display: flex;
+      align-items: flex-end;
+      padding: 36px 40px;
+    }
+    .section-banner-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      color: var(--white);
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    .section-banner-label span {
+      display: block;
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--gold-light);
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    /* ── CARD GRID ─────────────────────────────────────── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    /* ── PROJECT CARD ──────────────────────────────────── */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(201,168,76,0.12);
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+    }
+    .card-img {
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      position: relative;
+    }
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .card:hover .card-img img { transform: scale(1.08); }
+    .card-img-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--green-dark);
+      color: var(--gold);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .card-body { padding: 20px 20px 24px; flex: 1; display: flex; flex-direction: column; }
+    .card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .card-meta { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; }
+    .card-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+    .card-meta-row strong {
+      font-weight: 600;
+      color: var(--text-dark);
+      min-width: 46px;
+    }
+    .card-meta-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+    .card-divider {
+      height: 1px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      margin-bottom: 16px;
+      opacity: 0.35;
+    }
+    .card-footer { margin-top: auto; }
+    .btn-view {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--green-mid);
+      text-decoration: none;
+      border: 1.5px solid var(--green-mid);
+      border-radius: 40px;
+      padding: 8px 18px;
+      transition: all 0.25s;
+      cursor: pointer;
+      background: transparent;
+    }
+    .btn-view:hover {
+      background: var(--green-dark);
+      color: var(--gold);
+      border-color: var(--green-dark);
+    }
+    .btn-view svg { width: 12px; height: 12px; }
+
+    /* ── SECTION DIVIDER ───────────────────────────────── */
+    .section-divider {
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      opacity: 0.3;
+      margin: 0 48px;
+    }
+
+    /* ── FOOTER ────────────────────────────────────────── */
+    .footer {
+      background: var(--green-dark);
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 36px 48px;
+      font-size: 13px;
+    }
+    .footer strong { color: var(--gold); }
+
+    /* ── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 1100px) {
+      .cards-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 860px) {
+      .section { padding: 56px 24px; }
+      .nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .section-header { flex-direction: column; gap: 0; align-items: flex-start; }
+      .section-count { display: none; }
+      .cards-grid { grid-template-columns: repeat(2, 1fr); }
+      .section-banner { height: 240px; }
+      .page-hero { padding: 56px 24px 48px; }
+    }
+    @media (max-width: 540px) {
+      .cards-grid { grid-template-columns: 1fr; }
+      .section-banner { height: 200px; }
+    }
+
+    /* ── FADE-IN ANIMATION ─────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .section { animation: fadeUp 0.5s ease both; }
+    .card { animation: fadeUp 0.4s ease both; }
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.12s; }
+    .card:nth-child(3) { animation-delay: 0.19s; }
+    .card:nth-child(4) { animation-delay: 0.26s; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">CHEDI <span>Longevity</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#" class="active">Projects</a></li>
+    <li><a href="#">Farmers</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-content">
+    <div class="page-hero-badge">Our Work on the Ground</div>
+    <h1>Our <em>Projects</em></h1>
+    <p>From community-supported farms to independent farmer networks — explore every project CHEDI is nurturing across Tamil Nadu.</p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 1 · CSA PROJECTS
+═══════════════════════════════════════════════════════ -->
+<section class="section" id="csa">
+  <div class="section-header">
+    <div class="section-header-text">
+      <div class="section-tag">Section 01</div>
+      <h2 class="section-title">CSA Projects</h2>
+      <p class="section-sub">Community-supported farms delivering fresh and reliable produce directly from farmer to family.</p>
+    </div>
+    <div class="section-count">CSA</div>
+  </div>
+
+  <!-- Banner -->
+  <div class="section-banner">
+    <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1400&q=85" alt="CSA Farmland Banner"/>
+    <div class="section-banner-overlay">
+      <div class="section-banner-label">
+        <span>Community Supported Agriculture</span>
+        Fresh crops. Direct from farm to your table.
+      </div>
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div class="cards-grid">
+
+    <!-- Card 1 -->
+    <div class="card">
+      <div class="card-img">
+        <img src="https://chediwebsite.s3.us-east-1.amazonaws.com/images/72991.jpg" alt="Mullai crop farm"/>
+        <span class="card-img-badge">CSA</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Farm 1</div>
+        <div class="card-divider"></div>
+        <div class="card-meta">
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Crop</strong> Mullai</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Village</strong> Periyakulam</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>District</strong> Theni</div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-view">View Details <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=600&q=80" alt="Kurinji farm"/>
+        <span class="card-img-badge">CSA</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Farm 2</div>
+        <div class="card-divider"></div>
+        <div class="card-meta">
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Crop</strong> Kurinji</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Village</strong> Kodaikanal</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>District</strong> Dindigul</div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-view">View Details <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=600&q=80" alt="Neithal farm"/>
+        <span class="card-img-badge">CSA</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Farm 3</div>
+        <div class="card-divider"></div>
+        <div class="card-meta">
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Crop</strong> Neithal</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Village</strong> Mudukulathur</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>District</strong> Ramanathapuram</div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-view">View Details <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="card">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=600&q=80" alt="Marudam farm"/>
+        <span class="card-img-badge">CSA</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Farm 4</div>
+        <div class="card-divider"></div>
+        <div class="card-meta">
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Crop</strong> Marudam</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Village</strong> Natham</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>District</strong> Dindigul</div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-view">View Details <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 2 · LAND PROJECTS
+═══════════════════════════════════════════════════════ -->
+<section class="section" id="land">
+  <div class="section-header">
+    <div class="section-header-text">
+      <div class="section-tag">Section 02</div>
+      <h2 class="section-title">Land Projects</h2>
+      <p class="section-sub">Farmland projects developed with careful planning and long-term farming growth in mind.</p>
+    </div>
+    <div class="section-count">LAND</div>
+  </div>
+
+  <!-- Banner -->
+  <div class="section-banner">
+    <img src="https://chediwebsite.s3.us-east-1.amazonaws.com/images/brown-cow-eatting-grass.jpg" alt="Land Project Banner"/>
+    <div class="section-banner-overlay">
+      <div class="section-banner-label">
+        <span>Land Development Projects</span>
+        Building fertile ground for the next generation.
+      </div>
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div class="cards-grid">
+
+    <!-- Card 1 -->
+    <div class="card">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=600&q=80" alt="Mango plantation"/>
+        <span class="card-img-badge">Land</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Green Acres Project</div>
+        <div class="card-divider"></div>
+        <div class="card-meta">
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Crop</strong> Mango</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Village</strong> Bodinayakanur</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>District</strong> Theni</div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-view">View Details <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1620706857370-e1b9770e8bb1?w=600&q=80" alt="Banana plantation"/>
+        <span class="card-img-badge">Land</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Valley Land Project</div>
+        <div class="card-divider"></div>
+        <div class="card-meta">
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Crop</strong> Banana</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Village</strong> Palani</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>District</strong> Dindigul</div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-view">View Details <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=600&q=80" alt="Coconut plantation"/>
+        <span class="card-img-badge">Land</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">River Plains Project</div>
+        <div class="card-divider"></div>
+        <div class="card-meta">
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Crop</strong> Coconut</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Village</strong> Tirunelveli</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>District</strong> Tirunelveli</div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-view">View Details <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="card">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1589923188900-85dae523342b?w=600&q=80" alt="Teak plantation"/>
+        <span class="card-img-badge">Land</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Hill Range Project</div>
+        <div class="card-divider"></div>
+        <div class="card-meta">
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Crop</strong> Teak</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Village</strong> Gudalur</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>District</strong> Nilgiris</div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-view">View Details <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 3 · FARMER PROJECTS
+═══════════════════════════════════════════════════════ -->
+<section class="section" id="farmer">
+  <div class="section-header">
+    <div class="section-header-text">
+      <div class="section-tag">Section 03</div>
+      <h2 class="section-title">Farmer Projects</h2>
+      <p class="section-sub">Independent farmers growing strong with hands-on expert support from the CHEDI team.</p>
+    </div>
+    <div class="section-count">FARM</div>
+  </div>
+
+  <!-- Banner -->
+  <div class="section-banner">
+    <img src="https://chediwebsite.s3.us-east-1.amazonaws.com/images/2151479082.jpg" alt="Farmer Banner"/>
+    <div class="section-banner-overlay">
+      <div class="section-banner-label">
+        <span>Independent Farmer Projects</span>
+        People and land working together.
+      </div>
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div class="cards-grid">
+
+    <!-- Card 1 -->
+    <div class="card">
+      <div class="card-img">
+        <img src="https://chediwebsite.s3.us-east-1.amazonaws.com/images/17920.jpg" alt="Farmer Rajan"/>
+        <span class="card-img-badge">Farmer</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Rajan's Farm</div>
+        <div class="card-divider"></div>
+        <div class="card-meta">
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Crop</strong> Paddy</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Village</strong> Sirkazhi</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>District</strong> Mayiladuthurai</div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-view">View Details <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?w=600&q=80" alt="Farmer Murugan"/>
+        <span class="card-img-badge">Farmer</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Murugan's Farm</div>
+        <div class="card-divider"></div>
+        <div class="card-meta">
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Crop</strong> Sugarcane</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Village</strong> Dharapuram</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>District</strong> Tiruppur</div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-view">View Details <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=600&q=80" alt="Farmer Kavitha"/>
+        <span class="card-img-badge">Farmer</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Kavitha's Greens</div>
+        <div class="card-divider"></div>
+        <div class="card-meta">
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Crop</strong> Greens & Herbs</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Village</strong> Pattukottai</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>District</strong> Thanjavur</div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-view">View Details <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="card">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=600&q=80" alt="Farmer Selvam"/>
+        <span class="card-img-badge">Farmer</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Selvam's Orchard</div>
+        <div class="card-divider"></div>
+        <div class="card-meta">
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Crop</strong> Sapota</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>Village</strong> Vikravandi</div>
+          <div class="card-meta-row"><div class="card-meta-dot"></div><strong>District</strong> Villupuram</div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-view">View Details <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>© 2025 <strong>CHEDI Longevity</strong> — Rooted in Tamil Nadu. Growing for India.</p>
+</footer>
+
+</body>
+</html>
